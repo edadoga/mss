@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Duyu Atlası</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="11. sınıf biyoloji: duyu reseptörleri, nöronlar, sinaps ve duyu organları için etkileşimli 3D modeller ve simülasyonlar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#giris" data-go="giris">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Duyu Atlası</span>
+      <span class="brand-code">BİY.11.1.5</span>
+    </a>
+    <nav class="tabs" aria-label="Bölümler">
+      <a href="#giris" data-go="giris">Giriş</a>
+      <a href="#reseptor" data-go="reseptor"><b>1.5.1</b> Reseptörler</a>
+      <a href="#noron" data-go="noron"><b>1.5.2</b> Nöron</a>
+      <a href="#sinaps" data-go="sinaps"><b>1.5.2a</b> Sinaps</a>
+      <a href="#goz" data-go="goz"><b>1.5.3</b> Göz</a>
+      <a href="#kulak" data-go="kulak">Kulak</a>
+      <a href="#burun" data-go="burun">Burun</a>
+      <a href="#dil" data-go="dil">Dil</a>
+      <a href="#deri" data-go="deri">Deri</a>
+      <a href="#test" data-go="test">Test</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================= GİRİŞ ======================= -->
+<section class="sec" id="s-giris" data-sec="giris">
+  <div class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">C) Hayvanlarda tepki · 1.5 Duyu reseptörleri ve duyu organları</p>
+      <h1>Uyaran nasıl <em>algıya</em> dönüşür?</h1>
+      <p class="lead">Işık, ses, sıcaklık ve kimyasal maddeler önce reseptörlerde yakalanır, nöronlarla taşınır, merkezî sinir sisteminde yorumlanır. Bu atlasta her organı ve reseptörü 3D olarak çevirip inceleyebilir, simülasyonlarla deneyebilirsin.</p>
+      <div class="chain" aria-label="Algı zinciri">
+        <span>Uyaran</span><i></i><span>Reseptör</span><i></i><span>Nöron</span><i></i><span>Merkezî sinir sistemi</span>
+      </div>
+    </div>
+    <div class="sim hero-sim">
+      <div class="sim-head">
+        <p class="eyebrow">Simülasyon · Algı zinciri</p>
+        <h3>Bir uyaran seç, yolculuğunu izle</h3>
+      </div>
+      <canvas id="flowCanvas" width="720" height="300" aria-label="Uyaranın reseptörden beyne iletimi animasyonu"></canvas>
+      <div class="seg" id="flowSeg" role="group" aria-label="Uyaran seç">
+        <button type="button" data-s="isik" class="on">Işık</button>
+        <button type="button" data-s="ses">Ses</button>
+        <button type="button" data-s="sicak">Sıcaklık</button>
+        <button type="button" data-s="kimya">Kimyasal</button>
+        <button type="button" data-s="dokun">Dokunma</button>
+      </div>
+      <p class="readout" id="flowText">Işık → gözdeki fotoreseptörler (çubuk ve koni) → görme siniri → beyindeki görme merkezi</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Bölümler</p>
+      <h2>Atlasın haritası</h2>
+    </div>
+    <div class="map-grid">
+      <a class="map-card" href="#reseptor" data-go="reseptor"><b>1.5.1</b><span>Uyartıların alınması</span><small>5 reseptör tipi, 3D galeri</small></a>
+      <a class="map-card" href="#noron" data-go="noron"><b>1.5.2</b><span>Nöronların yapısı</span><small>3D nöron, eşik değer, zar potansiyeli</small></a>
+      <a class="map-card" href="#sinaps" data-go="sinaps"><b>1.5.2a</b><span>Sinyal iletimi ve sinaps</span><small>Nörotransmitter salınımı</small></a>
+      <a class="map-card" href="#goz" data-go="goz"><b>1.5.3</b><span>Göz</span><small>Işık yolu, çubuk–koni, kör nokta</small></a>
+      <a class="map-card" href="#kulak" data-go="kulak"><b>1.5.3</b><span>Kulak</span><small>Salyangoz, Corti organı, denge</small></a>
+      <a class="map-card" href="#burun" data-go="burun"><b>1.5.3</b><span>Burun</span><small>Koku epiteli, adaptasyon</small></a>
+      <a class="map-card" href="#dil" data-go="dil"><b>1.5.3</b><span>Dil</span><small>Tat tomurcuğu, beş tat</small></a>
+      <a class="map-card" href="#deri" data-go="deri"><b>1.5.3</b><span>Deri</span><small>7 reseptör, iki nokta testi</small></a>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Ön değerlendirme</p>
+      <h2>Aynı ortam, farklı bilgi</h2>
+      <p>Her canlı çevresindeki farklı uyaranlara daha duyarlıdır. Aynı ortamda bulunan canlılar çevre hakkında aynı bilgiyi almaz.</p>
+    </div>
+    <div class="animal-grid">
+      <article class="animal"><h4>Yayın balığı</h4><p class="tagline">Kemoreseptör · tüm vücut</p><p>Derisindeki tat alma tomurcuklarıyla tüm vücuduyla tat alır; tat yoğunluğundan yiyeceğini bulur.</p></article>
+      <article class="animal"><h4>Yusufçuk</h4><p class="tagline">Bileşik göz · ≈30 000 gözcük</p><p>Çok geniş görüş alanı sağlar; hareket hâlindeki nesneleri ağır çekimde görür gibi algılar.</p></article>
+      <article class="animal"><h4>Yunus</h4><p class="tagline">Mekanoreseptör · ekolokasyon</p><p>Yaydığı ses dalgaları engellere çarpıp geri döner; engelleri ve balık sürülerini böyle bulur.</p></article>
+      <article class="animal"><h4>Alman çoban köpeği</h4><p class="tagline">Kemoreseptör · 220 milyon</p><p>Burnundaki gelişmiş kemoreseptörlerle iz sürer; patlayıcı maddeyi ve kayıp kişileri bulabilir.</p></article>
+      <article class="animal"><h4>Yıldız burunlu köstebek</h4><p class="tagline">Mekanoreseptör · 22 uzantı</p><p>Burnundaki yirmi iki dokunma uzantısıyla toprak altını üç boyutlu algılar.</p></article>
+      <article class="animal"><h4>Çukur engereği</h4><p class="tagline">Termoreseptör · pit organ</p><p>Gözlerinin altındaki pit organla avının yaydığı ısıyı algılar, karanlıkta bile avlanır.</p></article>
+      <article class="animal"><h4>Elektrikli yılan balığı</h4><p class="tagline">Elektroreseptör</p><p>Elektriksel uyaranları algılar. İnsan elektrik ve manyetik alanı doğrudan algılayamaz.</p></article>
+      <article class="animal"><h4>Göçmen kuşlar</h4><p class="tagline">Manyetoreseptör</p><p>Bazı kuş ve balıklar dünyanın manyetik alanını algılayarak yön bulur.</p></article>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Etkinlik · Tanılayıcı dallanmış ağaç</p>
+      <h2>Doğru mu, yanlış mı? Doğru çıkışı bul</h2>
+      <p>Her ifadeyi doğru (D) ya da yanlış (Y) olarak işaretle. Tüm cevapların doğruysa doğru çıkışa ulaşırsın.</p>
+    </div>
+    <div class="tree" id="tree">
+      <p class="tree-q" id="treeQ">a) Duyu organları çevresel uyarıları algılar.</p>
+      <div class="tree-btns">
+        <button type="button" class="btn" data-a="D">Doğru (D)</button>
+        <button type="button" class="btn ghost" data-a="Y">Yanlış (Y)</button>
+        <button type="button" class="btn link" id="treeReset">Baştan başla</button>
+      </div>
+      <ol class="tree-path" id="treePath"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 1.5.1 RESEPTÖRLER ======================= -->
+<section class="sec" id="s-reseptor" data-sec="reseptor" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.1 · Uyartıların alınması</p>
+    <h1>Duyu reseptörleri</h1>
+    <p class="lead">Canlılar iç ve dış çevreden gelen uyaranlara maruz kalır. Bu uyaranların nöronlarda oluşturduğu kimyasal ve elektriksel değişime <strong>uyartı (impuls)</strong> denir. Reseptörler, farklı enerji formlarındaki uyaranları algılayıp uyartıya dönüştüren özelleşmiş epitel hücresi ya da nöronlardır.</p>
+  </div>
+
+  <div class="steps5" aria-label="Algının basamakları">
+    <div><b>Alınma</b><span>Uyaran çevreden gelir</span></div>
+    <div><b>Dönüştürülme</b><span>Reseptör uyaranı uyartıya çevirir</span></div>
+    <div><b>İletim</b><span>Uyartı nöronlarla taşınır</span></div>
+    <div><b>Yorumlama</b><span>Beyinde değerlendirilir</span></div>
+    <div><b>Tepki</b><span>Kas, salgı bezi</span></div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">3D galeri</p>
+      <h2>Beş reseptör tipi</h2>
+      <p>Bir reseptör seç, sonra uyaranı uygula. Parlayan nokta, oluşan uyartının sinir lifi boyunca taşınmasını gösterir.</p>
+    </div>
+    <div class="seg wrap" id="recSeg" role="group" aria-label="Reseptör seç">
+      <button type="button" data-r="meka" class="on">Mekanoreseptör</button>
+      <button type="button" data-r="kemo">Kemoreseptör</button>
+      <button type="button" data-r="termo">Termoreseptör</button>
+      <button type="button" data-r="nosi">Ağrı reseptörü</button>
+      <button type="button" data-r="foto">Elektromanyetik (fotoreseptör)</button>
+    </div>
+    <div class="lab">
+      <div class="stage" id="rec3d">
+        <div class="stage-tools">
+          <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+          <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+          <button type="button" data-act="reset">Sıfırla</button>
+        </div>
+        <p class="stage-hint">Sürükle: döndür · Kaydır: yakınlaştır</p>
+      </div>
+      <aside class="lab-side">
+        <div class="info" id="recInfo">
+          <p class="eyebrow">Fiziksel uyaran</p>
+          <h4>Mekanoreseptör</h4>
+          <p>Dokunma, basınç, gerilme, hareket ve ses dalgaları gibi mekanik enerjiyi algılar. Deri ve kulakta bulunur. Modeldeki yapı, deride basıncı algılayan Pacini cisimciğidir: soğan zarı gibi katmanlar sinir ucunu sarar.</p>
+        </div>
+        <div class="ctl" id="recCtl">
+          <button type="button" class="btn" id="recGo">Bastır</button>
+          <label class="range" id="recTempWrap" hidden>Sıcaklık <output id="recTempOut">33 °C</output>
+            <input type="range" id="recTemp" min="0" max="50" value="33">
+          </label>
+        </div>
+        <p class="readout" id="recRead">Uyaran bekleniyor</p>
+      </aside>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Sınıflandırma</p>
+      <h2>Uyaran türüne göre reseptörler</h2>
+    </div>
+    <div class="rtypes">
+      <article><h4>Mekanoreseptörler</h4><p>Dokunma, basınç, gerilme, hareket, ses dalgaları</p><span class="pill">Fiziksel · deri, kulak</span></article>
+      <article><h4>Kemoreseptörler</h4><p>Koku ve tat molekülleri</p><span class="pill alt">Kimyasal · burun, dil</span></article>
+      <article><h4>Termoreseptörler</h4><p>Sıcak ve soğuk gibi ısı değişimleri</p><span class="pill">Fiziksel · çoğunlukla deri ve dil</span></article>
+      <article><h4>Ağrı reseptörleri (nosiseptör)</h4><p>Doku hasarı; serbest sinir uçlarıdır, beyin hariç tüm vücutta bulunur</p><span class="pill mix">Fiziksel + kimyasal</span></article>
+      <article><h4>Elektromanyetik reseptörler</h4><p>Işık, elektrik, manyetizma. Gözdeki fotoreseptörler örnektir</p><span class="pill">Fiziksel · göz</span></article>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Uygulama 6 · Eşleştir</p>
+      <h2>Uyaranı algılayan reseptörü seç</h2>
+      <p>Her uyaran için reseptör adını seç, sonra kontrol et.</p>
+    </div>
+    <div class="match" id="stimMatch"></div>
+    <div class="row-btns"><button type="button" class="btn" id="stimCheck">Kontrol et</button><p class="readout" id="stimScore"></p></div>
+  </div>
+
+  <div class="block">
+    <div class="block-head">
+      <p class="eyebrow">Uygulama 8 · Cevap anahtarı</p>
+      <h2>Duyu organı ve reseptörler tablosu</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Duyu organı</th><th>Reseptör çeşidi</th><th>Reseptörün yapısı</th><th>İşlevi</th></tr></thead>
+        <tbody>
+          <tr><td>Göz</td><td>Fotoreseptör (elektromanyetik)</td><td>Nöron (çubuk ve koni hücreleri)</td><td>Işığı algılar</td></tr>
+          <tr><td>Kulak</td><td>Mekanoreseptör</td><td>Duyu epiteli (tüylü duyu hücreleri)</td><td>Ses ve dengeyle ilişkili mekanik uyaranları algılar</td></tr>
+          <tr><td>Burun</td><td>Kemoreseptör</td><td>Nöron (koku reseptör nöronları)</td><td>Koku moleküllerini algılar</td></tr>
+          <tr><td>Dil</td><td>Kemoreseptör</td><td>Duyu epiteli (tat tomurcukları)</td><td>Tat moleküllerini algılar</td></tr>
+          <tr><td>Deri</td><td>Mekanoreseptör, termoreseptör, nosiseptör</td><td>Nöron (serbest sinir uçları ve kapsüllü yapılar)</td><td>Dokunma, basınç, sıcaklık değişimi ve doku hasarı</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 1.5.2 NÖRON ======================= -->
+<section class="sec" id="s-noron" data-sec="noron" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.2 · Nöronların yapısı</p>
+    <h1>Nöron</h1>
+    <p class="lead">Sinir hücresine nöron denir. Nöron uyarıları alır, değerlendirir ve oluşan cevapları kas, salgı bezi gibi yapılara iletir. Hücre gövdesi, dendrit ve akson olmak üzere üç temel kısımdan oluşur.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="neuron3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Bir yapıya dokun · Sürükle: döndür</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="neuronInfo">
+        <p class="eyebrow">3D model</p>
+        <h4>Bir yapı seçin</h4>
+        <p>Modelde veya aşağıdaki listede bir yapıya dokunduğunda adı ve görevi burada görünür.</p>
+      </div>
+      <div class="ctl">
+        <button type="button" class="btn" id="nGo">Uyartı gönder</button>
+        <label class="switch"><input type="checkbox" id="nMyelin" checked> Miyelin kılıf</label>
+      </div>
+      <p class="readout" id="nRead">Miyelinli aksonda uyartı Ranvier boğumlarından atlayarak hızlı ilerler.</p>
+      <div class="chips" id="neuronChips"></div>
+    </aside>
+  </div>
+
+  <div class="facts">
+    <div><b>Hücre gövdesi</b><p>Enerji ihtiyacı fazladır, çok sayıda mitokondri bulunur. Nörofibriller nörona şekil verir, madde taşınmasında görev alır.</p></div>
+    <div><b>Akson uzunluğu</b><p>Milimetreden metreye değişir. Omurilikten ayaktaki kasa giden motor nöronun (siyatik sinir) aksonu 1 metreden uzundur; vagus siniri de en uzun sinirlerdendir.</p></div>
+    <div><b>Akson çapı</b><p>Akson ne kadar kalınsa uyartı o kadar hızlı iletilir.</p></div>
+    <div><b>Miyelin kılıf</b><p>Schwann hücrelerinin lipoprotein örtüsüdür; elektriksel yalıtım sağlar. İskelet kaslarına giden sinirler miyelinli, iç organlara ve düz kaslara gidenler genellikle miyelinsizdir.</p></div>
+  </div>
+
+  <div class="sim" id="simThreshold">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Eşik değer</p>
+      <h3>Ya hep ya hiç ve merdiven etkisi</h3>
+      <p>Bir nöronda uyartı oluşması için gereken en düşük uyaran şiddetine <strong>eşik değer</strong> denir. Tek nöron eşiğin üzerindeki her uyarana aynı şiddette tepki verir. Sinir demetinde aksonların eşikleri farklı olduğundan tepki kademeli artar.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="thrCanvas" width="760" height="300" aria-label="Uyaran ve tepki şiddeti grafiği"></canvas>
+      <div class="controls">
+        <div class="seg" id="thrMode" role="group" aria-label="Yapı">
+          <button type="button" data-m="tek" class="on">Sinir teli (tek nöron)</button>
+          <button type="button" data-m="demet">Sinir demeti</button>
+        </div>
+        <label class="range">Uyaran şiddeti <output id="thrOut">5</output>
+          <input type="range" id="thrI" min="1" max="10" value="5">
+        </label>
+        <div class="row-btns">
+          <button type="button" class="btn" id="thrGo">Uyar</button>
+          <button type="button" class="btn ghost" id="thrClr">Temizle</button>
+        </div>
+        <p class="readout" id="thrRead"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simMembrane">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Zar potansiyeli</p>
+      <h3>Polarizasyon, depolarizasyon, repolarizasyon</h3>
+      <p>Dinlenme hâlinde hücre içi negatif, hücre dışı pozitif yüklüdür (polarizasyon). Uyarılan bölgede yükler tersine döner (depolarizasyon) ve bu değişim akson boyunca dalga hâlinde ilerler (aksiyon potansiyeli). Ardından zar eski hâline döner (repolarizasyon). Uyartı dendritten aksona doğru ilerler.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="memCanvas" width="760" height="340" aria-label="Akson zarındaki yük değişimi"></canvas>
+      <div class="controls">
+        <button type="button" class="btn" id="memGo">Uyartı başlat</button>
+        <label class="range">Ölçüm noktası <output id="memPOut">%50</output>
+          <input type="range" id="memP" min="10" max="90" value="50">
+        </label>
+        <div class="state-pills" id="memState">
+          <span data-s="pol" class="on">Polarizasyon</span>
+          <span data-s="dep">Depolarizasyon</span>
+          <span data-s="rep">Repolarizasyon</span>
+        </div>
+        <p class="readout" id="memRead">Zar dinlenme potansiyelinde: içerisi (−), dışarısı (+)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simFreq">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Uyartı sıklığı</p>
+      <h3>Ilık mı, sıcak mı?</h3>
+      <p>Uyaran şiddeti arttıkça uyartı sayısı ve sıklığı artar. Beyindeki duyu merkezleri uyaranın şiddetini gelen uyartıların sıklığına ve sayısına göre belirler.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="freqCanvas" width="760" height="200" aria-label="Sıcaklığa göre uyartı dizisi"></canvas>
+      <div class="controls">
+        <label class="range">Dokunulan cismin sıcaklığı <output id="freqOut">20 °C</output>
+          <input type="range" id="freqT" min="20" max="50" value="20">
+        </label>
+        <p class="readout" id="freqRead"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SİNAPS ======================= -->
+<section class="sec" id="s-sinaps" data-sec="sinaps" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.2a · Nöronlarda sinyal iletimi ve sinaps</p>
+    <h1>Sinaps</h1>
+    <p class="lead">Nöronların birbiriyle ya da alıcı hücrelerle iletişime geçtiği bağlantı noktalarına <strong>sinaps</strong> denir. Uyartı aksonun sinaptik yumruna ulaştığında kesecikler içindeki <strong>nörotransmitter</strong> maddeleri sinaps boşluğuna döker; bu maddeler komşu hücrenin zarındaki reseptörlere bağlanır.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="syn3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Bir yapıya dokun · Sürükle: döndür</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="synInfo">
+        <p class="eyebrow">Kimyasal sinaps</p>
+        <h4>Uyartıyı gönder</h4>
+        <p>Önce sinaps tipini ve nörotransmitterin nasıl temizleneceğini seç, sonra uyartıyı gönder.</p>
+      </div>
+      <div class="ctl col">
+        <div class="seg" id="synType" role="group" aria-label="Sinaps tipi">
+          <button type="button" data-t="kol" class="on">Kolaylaştırıcı</button>
+          <button type="button" data-t="dur">Durdurucu</button>
+        </div>
+        <div class="seg" id="synClean" role="group" aria-label="Etkinin sonlandırılması">
+          <button type="button" data-c="enzim" class="on">Enzimle parçalama</button>
+          <button type="button" data-c="geri">Geri alım</button>
+        </div>
+        <button type="button" class="btn" id="synGo">Uyartı gönder</button>
+      </div>
+      <div class="meter" aria-live="polite"><span>Komşu hücre zar potansiyeli</span><b id="synMv">−70 mV</b><i id="synBar"></i></div>
+      <p class="readout" id="synRead">Sinaps dinlenmede</p>
+      <div class="chips" id="synChips"></div>
+    </aside>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Karşılaştır</p><h2>Elektriksel ve kimyasal sinaps</h2></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th></th><th>Elektriksel sinaps</th><th>Kimyasal sinaps</th></tr></thead>
+        <tbody>
+          <tr><td>İletim</td><td>Uyartı doğrudan nörondan nörona geçer, çok hızlıdır</td><td>Nörotransmitter maddeyle, sinaps boşluğu üzerinden</td></tr>
+          <tr><td>Temas</td><td>Hücreler fiziksel olarak temas eder</td><td>Hücreler arasında sinaps boşluğu vardır</td></tr>
+          <tr><td>Nerede</td><td>Omurgasızlarda yaygın; omurgalılarda ritmik kas kasılmalarında</td><td>Omurgalılarda daha yaygın</td></tr>
+          <tr><td>Yön</td><td>İki yönlü olabilir</td><td>Genellikle akson ucundan dendrite, tek yönlü</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div><b>Seçici direnç</b><p>Bir nöron birden çok nöronla sinaps yapabilir ve oluşan uyartıların tümü her sinapstan geçmez. Böylece her uyartıyla vücuttaki bütün tepki organları uyarılmamış olur.</p></div>
+    <div><b>Kolaylaştırıcı sinaps</b><p>Nörotransmitter komşu hücrede depolarizasyona neden olur, uyartı iletimi sağlanır.</p></div>
+    <div><b>Durdurucu sinaps</b><p>Yüksek polarizasyona (hiperpolarizasyon) yol açar, uyartı iletimini engeller.</p></div>
+    <div><b>Etkinin sonlanması</b><p>Nörotransmitter enzimlerle parçalanır ya da nöron tarafından geri alınır; ortam yeni bir uyarıya hazır hâle gelir.</p></div>
+  </div>
+</section>
+
+<!-- ======================= GÖZ ======================= -->
+<section class="sec" id="s-goz" data-sec="goz" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.3 · Duyu organları</p>
+    <h1>Göz <span class="sub">görme organı</span></h1>
+    <p class="lead">İnsanda bir çift göz vücuttaki reseptörlerin yaklaşık <strong>%70</strong>'ine sahiptir. Göz küresi dıştan içe <strong>sert tabaka</strong>, <strong>damar tabaka</strong> ve <strong>ağ tabaka</strong>dan oluşur. İnsan gözü 380–750 nm dalga boyundaki ışınları görür; morötesi ve kızılötesini göremez.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="eye3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="cut" aria-pressed="true">Kesit</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Bir yapıya dokun · Sürükle: döndür</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="eyeInfo">
+        <p class="eyebrow">Göz küresi</p>
+        <h4>Bir yapı seçin</h4>
+        <p>Kesit görünümü göz küresinin üç tabakasını ve içindeki odaları gösterir. Göz bebeği ayarıyla iris kaslarının ışığa tepkisini dene.</p>
+      </div>
+      <label class="range">Ortamdaki ışık <output id="pupOut">orta</output>
+        <input type="range" id="pupL" min="0" max="100" value="50">
+      </label>
+      <div class="ctl"><button type="button" class="btn" id="eyeRay">Işık ışını gönder</button></div>
+      <div class="chips" id="eyeChips"></div>
+    </aside>
+  </div>
+
+  <div class="sim" id="simRay">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Görüntü oluşumu</p>
+      <h3>Retinada ters görüntü</h3>
+      <p>Işık korneada kırılır, göz bebeğinden geçer, mercekte tekrar kırılıp camsı sıvı üzerinden sarı beneğe odaklanır. Görüntü burada <strong>ters ve küçük</strong> oluşur; görme sinirleriyle beyne ulaşınca düz algılanır.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="rayCanvas" width="760" height="330" aria-label="Göze gelen ışınların retinada ters görüntü oluşturması"></canvas>
+      <div class="controls">
+        <label class="range">Cismin uzaklığı <output id="rayDOut">orta</output>
+          <input type="range" id="rayD" min="0" max="100" value="45">
+        </label>
+        <label class="switch"><input type="checkbox" id="rayBrain"> Beyindeki algıyı göster</label>
+        <p class="readout">Dijital fotoğraf makinesinde de görüntü sensörde ters oluşur, yazılım düzeltir: retina ≈ sensör, iris ≈ diyafram, mercek ≈ objektif, beyin ≈ görüntü işlemci.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simRodCone">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Fotoreseptörler</p>
+      <h3>Çubuk ve koni hücreleri</h3>
+      <p>Çubuklar loş ışıkta şekli algılar, siyah-beyaz görmeyi sağlar ve <strong>rodopsin</strong> pigmenti içerir (A vitamini gerekir). Koniler yeterli ışıkta renkleri net algılar; kırmızı, yeşil ve maviye duyarlı üç tip vardır. Ara renkler konilerin birlikte ve farklı düzeylerde uyarılmasıyla algılanır.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="rcCanvas" width="760" height="300" aria-label="Işık şiddetine göre görülen sahne"></canvas>
+      <div class="controls">
+        <label class="range">Işık şiddeti <output id="rcOut">%70</output>
+          <input type="range" id="rcL" min="0" max="100" value="70">
+        </label>
+        <div class="seg" id="rcColor" role="group" aria-label="Işık rengi">
+          <button type="button" data-c="beyaz" class="on">Beyaz</button>
+          <button type="button" data-c="kirmizi">Kırmızı</button>
+          <button type="button" data-c="yesil">Yeşil</button>
+          <button type="button" data-c="mavi">Mavi</button>
+          <button type="button" data-c="sari">Sarı</button>
+        </div>
+        <div class="bars" id="rcBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-pair">
+    <div class="sim" id="simDark">
+      <div class="sim-head">
+        <p class="eyebrow">Bilgi kutusu · Rodopsin</p>
+        <h3>Karanlığa uyum</h3>
+        <p>Rodopsin karanlıkta sentezlenir, ışıkta parçalanır. Bu yüzden aydınlıktan karanlığa geçince ilk anda görüntü algılanmaz, bir süre sonra oluşmaya başlar.</p>
+      </div>
+      <canvas id="darkCanvas" width="420" height="240" aria-label="Karanlık odada görüntünün belirmesi"></canvas>
+      <div class="row-btns">
+        <button type="button" class="btn" id="darkOff">Işığı kapat</button>
+        <button type="button" class="btn ghost" id="darkOn">Işığı aç</button>
+      </div>
+    </div>
+    <div class="sim" id="simBlind">
+      <div class="sim-head">
+        <p class="eyebrow">Deney · Kör nokta</p>
+        <h3>Noktayı kaybet</h3>
+        <p>Sol gözünü kapat. Sağ gözünle <b>+</b> işaretine bak ve ekrana yavaşça yaklaş ya da uzaklaş. Bir mesafede kırmızı nokta kaybolur: görüntüsü fotoreseptör bulunmayan kör noktaya düşmüştür.</p>
+      </div>
+      <canvas id="blindCanvas" width="420" height="200" aria-label="Kör nokta testi"></canvas>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Etkinlik · 2. aşama</p><h2>Işığın gözde izlediği yol</h2><p>Yapılara doğru sırayla dokun.</p></div>
+    <div class="order" data-order="goz"></div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Göze yardımcı yapılar</p><h2>Gözü koruyanlar</h2></div>
+    <div class="rtypes">
+      <article><h4>Kaşlar</h4><p>Alından gelen terden ve yoğun güneş ışığından korur.</p></article>
+      <article><h4>Göz kapakları</h4><p>Altta ve üstte birer deri kıvrımı; gözü dış etkilerden korur.</p></article>
+      <article><h4>Kirpikler</h4><p>Göz kapaklarının ön kısmındadır, yabancı maddeleri tutar.</p></article>
+      <article><h4>Gözyaşı bezleri</h4><p>Gözyaşı gözün kurumasını engeller; içindeki <strong>lizozim</strong> enzimi mikroorganizmaları yok eder.</p></article>
+      <article><h4>Göz kasları</h4><p>Göz küresinin hareketini sağlar; sert tabakaya tutunur.</p></article>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div><b>≈50 / 330</b><p>İnsan gözü saniyede yaklaşık 50 defa yanıp sönen ışığı ayırt eder; bazı böcekler 330 defa. Böcekler en küçük hareketi bile algılar.</p></div>
+    <div><b>İbnülheysem</b><p>Optiği görme bilimi olarak tasarlayan bilim insanıdır. Optik Hazinesi 1100'lü yıllarda Latinceye çevrilmiştir.</p></div>
+    <div><b>Kornea</b><p>Saydam ve renksizdir; kan ve lenf damarı içermez. Işığı kırar.</p></div>
+    <div><b>Sarı benek</b><p>Merkezinde koniler, kenarlarında çubuklar yoğundur. Yandan yaklaşan cismin önce görüntüsü, sonra rengi algılanır.</p></div>
+  </div>
+</section>
+
+<!-- ======================= KULAK ======================= -->
+<section class="sec" id="s-kulak" data-sec="kulak" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.3 · Duyu organları</p>
+    <h1>Kulak <span class="sub">işitme ve denge organı</span></h1>
+    <p class="lead">Kulak ses dalgalarını uyartıya çevirip beyne ileterek işitmeyi sağlar. İnsan kulağı <strong>20–20 000 Hz</strong> aralığındaki sesleri duyar. Denge görevini vücudun dikey ve yatay konumundaki değişimleri beyin ve beyinciğe ileterek yerine getirir. Kulak dış, orta ve iç kulak olarak üç bölümde incelenir.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="ear3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Bir yapıya dokun · Sürükle: döndür</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="earInfo">
+        <p class="eyebrow">Kulak</p>
+        <h4>Bir yapı seçin</h4>
+        <p>Ses dalgası gönder: kulak zarı titreşir, çekiç–örs–üzengi titreşimin şiddetini artırarak oval pencereye aktarır, salyangozdaki sıvı dalgalanır.</p>
+      </div>
+      <div class="ctl"><button type="button" class="btn" id="earGo">Ses dalgası gönder</button></div>
+      <div class="legend3"><span class="l-dis">Dış kulak · gaz</span><span class="l-orta">Orta kulak · katı</span><span class="l-ic">İç kulak · sıvı</span></div>
+      <div class="chips" id="earChips"></div>
+    </aside>
+  </div>
+
+  <div class="sim" id="simCochlea">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Salyangoz ve Corti organı</p>
+      <h3>Frekans ve ses şiddeti</h3>
+      <p>Oval pencereden gelen titreşimler vestibüler kanalda sıvı dalgaları oluşturur ve kohlear kanalın <strong>temel zarını</strong> titreştirir. Temel zardaki Corti organının tüylü duyu hücreleri (mekanoreseptör) çatı zarına sürtünür ve uyartı oluşur. Titreşen tüy sayısı ne kadar fazlaysa ses o kadar şiddetli algılanır. Salyangoz burada düz açılmış olarak çizildi.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="cochCanvas" width="760" height="330" aria-label="Temel zarda frekansa göre titreşen bölge"></canvas>
+      <div class="controls">
+        <label class="range">Frekans <output id="cochFOut">1000 Hz</output>
+          <input type="range" id="cochF" min="0" max="1000" value="522">
+        </label>
+        <label class="range">Ses şiddeti <output id="cochAOut">orta</output>
+          <input type="range" id="cochA" min="5" max="100" value="45">
+        </label>
+        <button type="button" class="btn ghost" id="cochPlay" aria-pressed="false">Sesi çal</button>
+        <p class="readout" id="cochRead"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simRange">
+    <div class="sim-head">
+      <p class="eyebrow">Bilgi kutusu · Farklı canlılarda işitme</p>
+      <h3>Kim duyar?</h3>
+      <p>Bazı canlılar daha düşük ve daha yüksek frekansları duyabilir. Köpekler 100 000 Hz'e kadar sesleri duyar. Bazı güve türlerinin işitme organında ultrasonik dedektörler vardır; yaklaşan yarasaları böyle fark ederler.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="rangeCanvas" width="760" height="250" aria-label="Canlıların duyabildiği frekans aralıkları"></canvas>
+      <div class="controls">
+        <label class="range">Frekans <output id="rangeOut">10 000 Hz</output>
+          <input type="range" id="rangeF" min="0" max="1000" value="600">
+        </label>
+        <p class="readout" id="rangeRead"></p>
+        <p class="note">Yarasa ve güve aralıkları yaklaşık değerlerdir.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simBalance">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · İç kulakta denge</p>
+      <h3>Yarım daire kanalları ve otolitler</h3>
+      <p><strong>Yarım daire kanalları</strong> dönme, hızlanma ve yavaşlama hareketlerini algılar: baş döndüğünde endolenf sıvısı geride kalır, kupulayı ve içindeki tüylü hücreleri büker. <strong>Kesecik ve tulumcuk</strong> yer çekimine karşı konum değişimini algılar: baş eğilince otolit taşları jelatinimsi maddeyle kayar ve tüyleri büker.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="balCanvas" width="760" height="300" aria-label="Kupula ve otolitlerin hareketi"></canvas>
+      <div class="controls">
+        <div class="row-btns">
+          <button type="button" class="btn" id="balSpin" aria-pressed="false">Dönmeye başla</button>
+        </div>
+        <label class="range">Başın eğimi <output id="balTiltOut">0°</output>
+          <input type="range" id="balTilt" min="-45" max="45" value="0">
+        </label>
+        <p class="readout" id="balRead">Baş sabit</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Bu sırayı unutma</p><h2>İşitmede sesin ve uyartının izlediği yol</h2><p>Önce mekanik yol, sonra sinirsel yol. Yapılara doğru sırayla dokun.</p></div>
+    <div class="order" data-order="kulak"></div>
+  </div>
+
+  <div class="facts">
+    <div><b>Östaki borusu</b><p>Orta kulağı yutağa bağlar; yükseğe çıkınca ya da şiddetli seste kulak zarının iki yanındaki basıncı dengeler. Burundan gelen mikroorganizmalar bu yolla orta kulağa ulaşıp enfeksiyon yapabilir.</p></div>
+    <div><b>Gaz → katı → sıvı</b><p>Ses dış kulakta havada, orta kulakta kemiklerde, iç kulakta sıvıda ilerler. İletim hızı gazda en düşük, katıda en yüksektir.</p></div>
+    <div><b>Yuvarlak pencere</b><p>Timpanik kanaldaki dalgalar burada sönümlenir; iç kulak yeni titreşimlere hazır hâle gelir.</p></div>
+    <div><b>İşitme kaybı</b><p>Aşırı sese maruz kalan işitme sinirlerinde işlev kaybı olur; gürültülü ortamda uzun süre kalmak işitme kaybı yapabilir.</p></div>
+  </div>
+</section>
+
+<!-- ======================= BURUN ======================= -->
+<section class="sec" id="s-burun" data-sec="burun" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.3 · Duyu organları</p>
+    <h1>Burun <span class="sub">koku alma organı</span></h1>
+    <p class="lead">Koku duyusu <strong>uçucu</strong> ve <strong>mukusta çözünebilen</strong> kimyasalları algılar. Burnun üst kısmında koku reseptörlerinin bulunduğu <strong>sarı bölge</strong> vardır. Koku reseptörleri kemoreseptör görevi yapan özelleşmiş sinir hücreleridir; dendritleri sarı bölgede, akson uçları beyindeki koku soğancığındadır.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="nose3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Koku epiteli (sarı bölge) yakın plan</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="noseInfo">
+        <p class="eyebrow">Sarı bölge</p>
+        <h4>Bir koku gönder</h4>
+        <p>Her koku reseptörü belirli molekül şekillerini algılar. Aynı kokuyu art arda gönder: duyu adaptasyonu nedeniyle tepki azalır. Farklı bir koku ise yine güçlü algılanır.</p>
+      </div>
+      <div class="ctl wrap">
+        <button type="button" class="btn k-a" data-k="0">Limon</button>
+        <button type="button" class="btn k-b" data-k="1">Lavanta</button>
+        <button type="button" class="btn k-c" data-k="2">Kahve</button>
+      </div>
+      <div class="bars" id="noseBars"></div>
+      <p class="readout" id="noseRead">Koku bekleniyor</p>
+      <div class="chips" id="noseChips"></div>
+    </aside>
+  </div>
+
+  <div class="sim-pair">
+    <div class="sim" id="simSmellCount">
+      <div class="sim-head">
+        <p class="eyebrow">Bilgi kutusu</p>
+        <h3>Koku reseptörü sayısı</h3>
+        <p>Köpeklerin ve boz ayıların koku duyusu bu yüzden çok gelişmiştir.</p>
+      </div>
+      <canvas id="smellCountCanvas" width="420" height="230" aria-label="İnsan, köpek ve boz ayıda koku reseptörü sayısı"></canvas>
+    </div>
+    <div class="sim" id="simSmellDir">
+      <div class="sim-head">
+        <p class="eyebrow">Simülasyon · Kokunun yönü</p>
+        <h3>Hangi taraftan geliyor?</h3>
+        <p>Moleküllerin iki burun deliğine geliş zamanları arasındaki fark, kaynağın yönünü tahmin etmeyi sağlar.</p>
+      </div>
+      <canvas id="smellDirCanvas" width="420" height="230" aria-label="Koku kaynağının yönü"></canvas>
+      <label class="range">Kaynağın konumu <output id="dirOut">sağ</output>
+        <input type="range" id="dirX" min="-100" max="100" value="60">
+      </label>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Şema 1.5.3</p><h2>Koku alma olayının gerçekleşme sırası</h2><p>Yapılara doğru sırayla dokun.</p></div>
+    <div class="order" data-order="burun"></div>
+  </div>
+
+  <div class="facts">
+    <div><b>Talamusa uğramaz</b><p>Diğer duyulardan farklı olarak koku uyartıları talamusa uğramadan doğrudan beyindeki koku merkezine gider.</p></div>
+    <div><b>Duyu adaptasyonu</b><p>Uzun süre aynı koku alınırsa reseptörler uyum sağlar ve o koku alınmaz; ortamdaki farklı bir koku yine algılanır.</p></div>
+    <div><b>Yön bulma</b><p>Koku veren moleküllerin burun deliklerine geliş zamanı farkı, kaynağın yönünü bulmaya yardım eder.</p></div>
+    <div><b>Nezle ve grip</b><p>Salgılanan mukus miktarının artması koku kaybına neden olabilir.</p></div>
+  </div>
+</section>
+
+<!-- ======================= DİL ======================= -->
+<section class="sec" id="s-dil" data-sec="dil" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.3 · Duyu organları</p>
+    <h1>Dil <span class="sub">tat alma organı</span></h1>
+    <p class="lead">Dil konuşma, beslenme ve yutmaya yardım eder; üzeri epitel dokuyla örtülüdür. Dil üzerinde ve ağız boşluğunda <strong>papilla</strong> denen çıkıntılarda tat tomurcukları bulunur. Tat tomurcukları <strong>kemoreseptör</strong> ve <strong>destek hücrelerinden</strong> oluşur; reseptörler yalnızca sıvı içinde çözünmüş tat moleküllerini algılar.</p>
+  </div>
+
+  <div class="lab-duo">
+    <div class="lab">
+      <div class="stage" id="tongue3d">
+        <div class="stage-tools">
+          <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+          <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+          <button type="button" data-act="reset">Sıfırla</button>
+        </div>
+        <p class="stage-hint">Dil ve papillalar</p>
+      </div>
+      <aside class="lab-side">
+        <div class="info" id="tongueInfo">
+          <p class="eyebrow">Dil</p>
+          <h4>Bir yapı seçin</h4>
+          <p>Dilin her bölgesi acı, ekşi, tatlı ve tuzlu tatları algılayabilir. Bunlara ek olarak glutamatın algılanmasıyla oluşan umami tadı vardır.</p>
+        </div>
+        <div class="chips" id="tongueChips"></div>
+      </aside>
+    </div>
+    <div class="lab">
+      <div class="stage" id="bud3d">
+        <div class="stage-tools">
+          <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+          <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+          <button type="button" data-act="reset">Sıfırla</button>
+        </div>
+        <p class="stage-hint">Tat tomurcuğu yakın plan</p>
+      </div>
+      <aside class="lab-side">
+        <div class="info" id="budInfo">
+          <p class="eyebrow">Tat tomurcuğu</p>
+          <h4>Bir tat seç</h4>
+          <p>Tükürükte çözünen moleküller tat porundan girer, ilgili kemoreseptörleri uyarır. Uyartılar duyu sinirleriyle önce talamusa, sonra beyin kabuğundaki tat merkezine gider.</p>
+        </div>
+        <div class="ctl wrap" id="tasteBtns">
+          <button type="button" class="btn t-tuzlu" data-t="0">Tuzlu</button>
+          <button type="button" class="btn t-tatli" data-t="1">Tatlı</button>
+          <button type="button" class="btn t-eksi" data-t="2">Ekşi</button>
+          <button type="button" class="btn t-aci" data-t="3">Acı</button>
+          <button type="button" class="btn t-umami" data-t="4">Umami</button>
+        </div>
+        <p class="readout" id="budRead">Tat bekleniyor</p>
+        <div class="chips" id="budChips"></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="sim" id="simOlive">
+    <div class="sim-head">
+      <p class="eyebrow">Bağlam · Zeytinyağı tadım paneli</p>
+      <h3>Tat, koku ve sıcaklık birlikte çalışır</h3>
+      <p>Panelistler M örneğini normal koşulda, burun klipsiyle ve 38 °C'de tattı. Meyvemsi aroma burun epitelindeki kemoreseptörlere bağlıdır; boğazda yanma hissini yutak mukozasındaki serbest sinir uçları (nosiseptör) oluşturur ve bu yapı ısıyla da etkinleşir.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="oliveCanvas" width="760" height="260" aria-label="Duyusal puanlar grafiği"></canvas>
+      <div class="controls">
+        <div class="seg" id="oliveCond" role="group" aria-label="Uygulama">
+          <button type="button" data-c="0" class="on">Normal (22 °C)</button>
+          <button type="button" data-c="1">Burun klipsi takılı</button>
+          <button type="button" data-c="2">38 °C sunum</button>
+        </div>
+        <p class="readout" id="oliveRead"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sim" id="simAge">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Tat algısını etkileyen faktörler</p>
+      <h3>Yaş ve nezle</h3>
+      <p>Yaşlanmayla tat tomurcuğu sayısı azaldığı için tat duyusu zayıflar. Koku alma duyusu nezle, grip, soğuk algınlığı gibi nedenlerle etkilenirse tat alma da azalır; koku merkezi ile tat merkezi beyinde birbirine yakındır.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="ageCanvas" width="760" height="220" aria-label="Yaşa göre tat tomurcukları"></canvas>
+      <div class="controls">
+        <label class="range">Yaş <output id="ageOut">16</output>
+          <input type="range" id="ageY" min="10" max="85" value="16">
+        </label>
+        <label class="switch"><input type="checkbox" id="ageCold"> Nezle (koku alınamıyor)</label>
+        <p class="readout" id="ageRead"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Şema 1.5.4</p><h2>Tat alma olayı</h2><p>Yapılara doğru sırayla dokun.</p></div>
+    <div class="order" data-order="dil"></div>
+  </div>
+
+  <div class="facts">
+    <div><b>Umami</b><p>Japoncada "lezzetli tat" anlamına gelir; glutamatın (glutamik asit) algılanmasıyla oluşur.</p></div>
+    <div><b>Farenin dili</b><p>İnsan dilinden çok daha fazla tat alma reseptörü taşır; kalsiyum ve karbonatın tadını bile alabilir.</p></div>
+    <div><b>Dildeki diğer reseptörler</b><p>Termoreseptör ve mekanoreseptörler yiyeceğin sıcaklığını ve sertliğini algılar.</p></div>
+    <div><b>Görünüş ve koku</b><p>Besinin görünüşü, kokusu, soğuk ya da sıcak olması tadın alınmasını etkiler.</p></div>
+  </div>
+</section>
+
+<!-- ======================= DERİ ======================= -->
+<section class="sec" id="s-deri" data-sec="deri" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">1.5.3 · Duyu organları</p>
+    <h1>Deri <span class="sub">dokunma, basınç, sıcaklık ve ağrı</span></h1>
+    <p class="lead">Tüm vücudu saran deri <strong>üst deri (epidermis)</strong> ve <strong>alt deri (dermis)</strong> olmak üzere iki tabakadan oluşur. Dermiste dokunma, basınç, sıcaklık ve ağrı gibi duyuları alan reseptörler bulunur; bu reseptörler vücuda homojen dağılmamıştır.</p>
+  </div>
+
+  <div class="lab tall">
+    <div class="stage" id="skin3d">
+      <div class="stage-tools">
+        <button type="button" data-act="labels" aria-pressed="true">Etiketler</button>
+        <button type="button" data-act="spin" aria-pressed="false">Döndür</button>
+        <button type="button" data-act="reset">Sıfırla</button>
+      </div>
+      <p class="stage-hint">Bir yapıya dokun · Bir uyaran uygula</p>
+    </div>
+    <aside class="lab-side">
+      <div class="info" id="skinInfo">
+        <p class="eyebrow">Deri kesiti</p>
+        <h4>Bir uyaran uygula</h4>
+        <p>Her uyaran farklı reseptörleri uyarır. Uyarılan reseptör parlar, uyartı sinir boyunca taşınır.</p>
+      </div>
+      <div class="ctl wrap" id="skinStim">
+        <button type="button" class="btn" data-s="hafif">Hafif dokunma</button>
+        <button type="button" class="btn" data-s="surekli">Sürekli temas</button>
+        <button type="button" class="btn" data-s="basinc">Basınç / titreşim</button>
+        <button type="button" class="btn" data-s="kil">Kılı hareket ettir</button>
+        <button type="button" class="btn" data-s="sicak">Sıcak</button>
+        <button type="button" class="btn" data-s="soguk">Soğuk</button>
+        <button type="button" class="btn" data-s="agri">İğne batması</button>
+      </div>
+      <p class="readout" id="skinRead">Uyaran bekleniyor</p>
+      <div class="chips" id="skinChips"></div>
+    </aside>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Derinin yapısı</p><h2>Tabakalar ve görevleri</h2></div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Tabaka</th><th>Yapı</th><th>Özellik</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">Üst deri (epidermis)</td><td>Korun tabakası</td><td>Ölü hücreler, keratin içerir; mikroorganizmalara ve dış etkilere karşı korur. Saç ve tırnak bu tabakadan oluşur. Kan damarı yoktur.</td></tr>
+          <tr><td>Malpighi tabakası</td><td>Canlı hücrelerdir, bölünerek korun tabakasını yeniler. Melanositler deriye rengini veren melanin pigmentini sentezler, morötesi ışınları süzer.</td></tr>
+          <tr><td>Alt deri (dermis)</td><td>Temel bağ doku</td><td>Kan damarları, sinir uçları, ter ve yağ bezleri, reseptörler, kıl kökleri, düz kaslar; kolajen, elastik ve ağsı lifler bulunur.</td></tr>
+          <tr><td>Altında</td><td>Yağ doku</td><td>Isı kaybını önler, vücudu dış etkilere karşı korur.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sim" id="simTwoPoint">
+    <div class="sim-head">
+      <p class="eyebrow">Simülasyon · Reseptör yoğunluğu</p>
+      <h3>İki nokta testi</h3>
+      <p>Reseptörler parmak ucunda yoğun, kolda seyrektir. İki uç aynı reseptör alanına düşerse beyin tek nokta algılar. Mesafeyi değiştir ve iki bölgeyi karşılaştır.</p>
+    </div>
+    <div class="sim-body">
+      <canvas id="tpCanvas" width="760" height="260" aria-label="Parmak ucu ve kolda iki nokta ayırt etme"></canvas>
+      <div class="controls">
+        <label class="range">İki uç arası mesafe <output id="tpOut">10 mm</output>
+          <input type="range" id="tpD" min="1" max="50" value="10">
+        </label>
+        <p class="readout" id="tpRead"></p>
+        <p class="note">Eşik değerler yaklaşıktır.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div><b>Kolajen lifler</b><p>Demetler hâlinde; mekanik etkilere dirençli, esneme özelliği olmayan, gerilmeye dayanıklı lifler.</p></div>
+    <div><b>Elastik lifler</b><p>Elastin proteininden oluşur; deriye esneklik kazandırır.</p></div>
+    <div><b>Ağsı lifler</b><p>İnce ve dallanmış yapıdadır, organlara destek sağlar.</p></div>
+    <div><b>Batı Hint denizayısı</b><p>Dokunma duyusu çok gelişmiştir; vücuduna henüz dokunmamış nesneleri bile anında tespit eder.</p></div>
+  </div>
+</section>
+
+<!-- ======================= TEST ======================= -->
+<section class="sec" id="s-test" data-sec="test" hidden>
+  <div class="sec-head">
+    <p class="eyebrow">Pekiştirme</p>
+    <h1>Kendini dene</h1>
+    <p class="lead">Ders sunumlarındaki sorulardan derlendi. Bir seçeneğe dokununca doğru cevap ve kısa açıklama görünür.</p>
+  </div>
+  <div class="quiz-score" id="quizScore">0 / 0 doğru</div>
+  <ol class="quiz" id="quiz"></ol>
+
+  <div class="block">
+    <div class="block-head"><p class="eyebrow">Eşleştirme</p><h2>Duyu organları ve reseptörlerin bulunduğu bölgeler</h2></div>
+    <div class="match" id="organMatch"></div>
+    <div class="row-btns"><button type="button" class="btn" id="organCheck">Kontrol et</button><p class="readout" id="organScore"></p></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p>Duyu Atlası · 11. sınıf biyoloji, BİY.11.1.5 Duyu reseptörleri ve duyu organları. 3D modeller şematiktir; ölçekler gerçek oranları göstermez.</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
